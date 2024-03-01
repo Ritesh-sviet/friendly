@@ -17,12 +17,12 @@ class WaveController extends Controller
         
         // get the profile image from respose too
         $waves = Wave::with('user')->get();
-        return response()->json(['status' => 'success', 'data' => $waves], 200);
+        return response()->json(['status' => 'success','message' => 'all waves loaded successfully', 'data' => $waves], 200);
     }
     public function waveIndex(){
         // $waves = Wave::with('user')->get();
         $waves=Wave::where('user_id', Auth::user()->id)->with('user')->get();
-        return response()->json(['status' => 'success', 'data' => $waves], 200);
+        return response()->json(['status' => 'success','message' => 'user waves loaded sucessfully', 'data' => $waves], 200);
     }
 
 
@@ -39,7 +39,7 @@ class WaveController extends Controller
         $image->move(public_path('images'), $imageName);
 
         // Create wave record
-        Wave::create([
+        $wave = Wave::create([
             'user_id' => Auth::user()->id,
             'wave_name' => $imageName,
             'wave_message' => $request->input('wave_message'),
@@ -47,7 +47,7 @@ class WaveController extends Controller
             'status' => 1,
         ]);
 
-        return response()->json(['status' => 'success', 'message' => 'Wave created successfully'], 200);
+        return response()->json(['status' => 'success', 'message' => 'Wave created successfully', 'data' => $wave], 200);
     }
 
     public function updateWave(Request $request){
@@ -62,7 +62,7 @@ class WaveController extends Controller
         $wave->wave_message = $request->wave_message;
         $wave->save();
         if($wave){
-            return response()->json(['status'=> 'success', 'message' => 'Wave updated successfully'], 200);
+            return response()->json(['status'=> 'success', 'message' => 'Wave updated successfully', 'data' => $wave], 200);
         }
         else
         {

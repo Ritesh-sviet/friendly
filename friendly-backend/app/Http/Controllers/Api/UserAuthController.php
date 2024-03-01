@@ -30,7 +30,8 @@ class UserAuthController extends Controller
             'last_name' => $register['last_name'],
             'email' => $register['email'],
             'phone_number' => $register['phone_number'],
-            'password' => Hash::make(($register['password'])),
+            'password' => $register['password'],
+            // 'password' => Hash::make(($register['password'])),
             'username' => $username,
             'social_security_number' => substr($register['phone_number'] . rand(pow(10, 8 - 1), pow(10, 8) -1), 0, 6),
             'status' => 1,
@@ -65,6 +66,7 @@ class UserAuthController extends Controller
                 }
                 $token = $user->createToken('auth_token')->plainTextToken;
                 $currentUser['token'] = $token;
+                $currentUser['id'] = $user->id;
                 $currentUser['firstname'] = $user->first_name;
                 $currentUser['lastname'] = $user->last_name;
                 $currentUser['email'] = $user->email;
@@ -82,6 +84,7 @@ class UserAuthController extends Controller
 
     public function updatePassword(Request $request)
     {
+        
         $userValidation = $request->validate([
             'oldpassword' => 'required|string',
             'newpassword' => 'required|string',

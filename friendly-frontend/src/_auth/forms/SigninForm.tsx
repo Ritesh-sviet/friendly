@@ -53,7 +53,7 @@ const SigninForm = () => {
           // setting the token and name in the local storage so that they can be used later on when needed
           localStorage.setItem('token', response.data.data.token);
           localStorage.setItem('name', response.data.data.firstname);
-
+          localStorage.setItem('id', response.data.data.id);
         }
         else {
           toast.error(response.data.message);
@@ -97,7 +97,7 @@ const SigninForm = () => {
         <div className='flex flex-col mt-[15px] text-20px'>
           <Link className=' text-bar outline-none text-[20px]' to='/sign-up' >Sign Up</Link>
           <Button variant={'outline'} className='mt-[20px] w-[150px] h-[50px] rounded-[10px] text-[25px] outline-none border-none bg-sidebar text-white' type='submit'>
-            {isLoading ? <div className='flex flex-center gap-2 items-center justify-center px-2'>
+            {isLoading ? <div className='flex items-center justify-center gap-2 px-2 flex-center'>
               < Loader /> Loading
             </div> : "Log in"}
           </Button>

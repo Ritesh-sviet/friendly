@@ -34,7 +34,7 @@ const LeftSideBar = () => {
                 Authorization: `Bearer ${token}`,
             };
             // Make a POST request to the logout API endpoint with empty data and the headers
-            const response = await axios.post(url, {}, { headers });
+            const response = await axios.post(url, {}, { headers: headers });
             // Check if the logout is successful
             if (response.data.status === "success") {
                 toast.success(response.data.message);
@@ -53,9 +53,9 @@ const LeftSideBar = () => {
         }
     }
     return (
-        <nav className='Sidebar w-1/5 h-screen bg-sidebar'>
+        <nav className='w-1/5 h-screen Sidebar bg-sidebar'>
             <div className='flex flex-col gap-11'>
-                <Link to={'/friendly'} className='flex gap-3 mt-10 justify-center items-center'>
+                <Link to={'/friendly'} className='flex items-center justify-center gap-3 mt-10'>
                     <img
                         src="../../public/assets/icons/Layer_1.png"
                         alt="logo"
@@ -72,7 +72,7 @@ const LeftSideBar = () => {
                             <li className={`leftsidebar-link rounded-lg w-64 my-0 mx-auto ${isActive && 'bg-linkcolor'}`} key={link.route}>
                                 <NavLink
                                     to={link.route}
-                                    className='my-0 mx-auto justify-start flex gap-4 p-4 pl-10 text-white'
+                                    className='flex justify-start gap-4 p-4 pl-10 mx-auto my-0 text-white'
                                 >
                                     <img src={link.imgURL} alt={link.label} className='group-hover:invert-white' />
                                     {link.label}
@@ -83,10 +83,10 @@ const LeftSideBar = () => {
                     })}
                     {LogoutLink.map((link: INavLink) => {
                         return (
-                            <li className='leftsidebar-link flex justify-center mt-24'>
+                            <li className='flex justify-center mt-24 leftsidebar-link'>
                                 <NavLink
                                     to={link.route}
-                                    className='flex gap-4 item-center p-4 text-white'
+                                    className='flex gap-4 p-4 text-white item-center'
                                     onClick={handleLogout}>
                                     <img src={link.imgURL} alt={link.label}
                                         className='group-hover:invert-white' />

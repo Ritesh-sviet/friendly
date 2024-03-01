@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { AlertDialogCancel } from '../ui/alert-dialog'
 import { GoXCircle } from 'react-icons/go'
 
@@ -31,6 +31,12 @@ interface UserDetailsPopupProps {
 // This code defines a React functional component called UserDetailsPopup, which takes in props of type UserDetailsPopupProps. It renders a popup displaying various details of a user, such as their full name, email, SSN, zip code, and more. The details are displayed in a structured layout using div and span elements with specific styles applied using Tailwind CSS classes.
 // this is show all the details about the user in a popup
 const UserDetailsPopup: React.FC<UserDetailsPopupProps> = (props) => {
+    const [userCreatedAt, setUserCreatedAt] = useState(props.user.created_at);
+    useEffect(() => {
+        const dateObject = new Date(userCreatedAt);
+        setUserCreatedAt(dateObject.toISOString().split('T')[0]);
+    }, [props.user])
+    
     return (
         <div>
 
@@ -38,7 +44,7 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = (props) => {
                 <AlertDialogCancel className='text-4xl rounded-[50%] p-0 text-red-600 hover:outline-green'><GoXCircle /></AlertDialogCancel>
             </div>
 
-            <div className='text-xl w-full bg-blue-500 text-white p-5 font-sans'>User Data</div>
+            <div className='w-full p-5 font-sans text-xl text-white bg-blue-500'>User Data</div>
             <div className='pt-[20px] flex justify-evenly'>
                 <div className='w-[40%]'>
                     <div className='flex justify-between py-[10px]'>
@@ -71,7 +77,8 @@ const UserDetailsPopup: React.FC<UserDetailsPopupProps> = (props) => {
 
                     <div className='flex justify-between py-[10px]'>
                         <code className='font-semibold'>Created At:</code>
-                        <i className='flex flex-wrap'>{props.user.created_at}</i>
+                        <i className='flex flex-wrap'>{userCreatedAt}</i>
+                        {/* <i className='flex flex-wrap'>{props.user.created_at}</i> */}
                     </div>
                     <div className='flex justify-between py-[10px]'>
                         <code className='font-semibold'>Gender:</code>

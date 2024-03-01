@@ -19,7 +19,7 @@ import { BsFillEyeFill } from "react-icons/bs";
 import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { FaSearch } from 'react-icons/fa';
-import EditWavePopup from '@/components/shared/EditWavePopup';
+import EditUserDetailsPopup from '@/components/shared/EditUserDetailsPopup';
 interface AllUser {
     id: number;
     first_name: string;
@@ -123,9 +123,9 @@ const TotalUsers: React.FC = () => {
 
 
     return (
-        <div className='flex flex-col mt-20 ml-10 gap-10 w-full'>
-            <div className='flex text-2xl w-48 justify-evenly items-center mt-8 cursor-pointer font-nunito'>
-                <IoArrowBackCircleOutline className='goBackIcon hover:-translate-x-2 hover:transition-all hover:ease-in-out hover:duration-300 text-5xl' onClick={() => navigate('/admin/dashboard')} /> Total Users
+        <div className='flex flex-col w-full gap-10 mt-20 ml-10'>
+            <div className='flex items-center w-48 mt-8 text-2xl cursor-pointer justify-evenly font-nunito'>
+                <IoArrowBackCircleOutline className='text-5xl goBackIcon hover:-translate-x-2 hover:transition-all hover:ease-in-out hover:duration-300' onClick={() => navigate('/admin/dashboard')} /> Total Users
             </div>
             <div className='flex flex-col w-full gap-5'>
                 <span className='text-2xl font-nunito text-sidebar'>Manage user list</span>
@@ -134,14 +134,14 @@ const TotalUsers: React.FC = () => {
                         <div className='bg-white h-16 w-[20rem] py-0 m-5 pl-5 shadow-2xl border-2 rounded-3xl flex items-center'>
                             <FaSearch className='text-sidebar' />
                             <input
-                                className='bg-transparent border-none h-full text-lg font-medium ml-3 focus:outline-none'
+                                className='h-full ml-3 text-lg font-medium bg-transparent border-none focus:outline-none'
                                 placeholder='Type to search...' onChange={handleFilterChange} title="Type in an email"/>
                         </div>
                     </CardTitle>
                     <CardContent>
                         <Table>
                             <TableHeader>
-                                <TableRow className='font-semibold text-lg'>
+                                <TableRow className='text-lg font-semibold'>
                                     <TableHead>Name</TableHead>
                                     <TableHead>Email</TableHead>
                                     <TableHead>Mobile</TableHead>
@@ -161,15 +161,15 @@ const TotalUsers: React.FC = () => {
                                                 <TableCell>{user.email}</TableCell>
                                                 <TableCell>{user.phone_number}</TableCell>
                                                 <TableCell>
-                                                    <label className="relative inline-flex items-center me-5 cursor-pointer">
+                                                    <label className="relative inline-flex items-center cursor-pointer me-5">
                                                         <input type="checkbox" checked={user.status === 1 ? true : false} className="sr-only peer" onChange={() => handleChangeStatus(user.id)} />
                                                         <div className="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
                                                     </label>
                                                 </TableCell>
-                                                <TableCell className='gap-5 flex justify-center'>
+                                                <TableCell className='flex justify-center gap-5'>
                                                     <AlertDialog>
                                                         <AlertDialogTrigger asChild>
-                                                            <div className='text-xl flex items-center cursor-pointer'><BsFillEyeFill /></div>
+                                                            <div className='flex items-center text-xl cursor-pointer'><BsFillEyeFill /></div>
                                                         </AlertDialogTrigger>
                                                         <AlertDialogContent className='max-w-none w-[1000px] -translate-y-[50%] -translate-x-[30%]'>
                                                             <UserDetailsPopup
@@ -179,13 +179,13 @@ const TotalUsers: React.FC = () => {
                                                     </AlertDialog>
                                                     <AlertDialog>
                                                         <AlertDialogTrigger>
-                                                            <div className='text-xl flex items-center cursor-pointer'><MdEdit /></div>
+                                                            <div className='flex items-center text-xl cursor-pointer'><MdEdit /></div>
                                                         </AlertDialogTrigger>
                                                         <AlertDialogContent className='max-w-none w-1/2 -translate-y-[50%] -translate-x-[30%] h-[95%]'>
-                                                            <EditWavePopup user={user.id} />
+                                                            <EditUserDetailsPopup user={user.id} />
                                                         </AlertDialogContent>
                                                     </AlertDialog>
-                                                    <div className='text-xl flex items-center cursor-pointer' onClick={() => handleDeleteUser(user.id)}><MdDelete /></div>
+                                                    <div className='flex items-center text-xl cursor-pointer' onClick={() => handleDeleteUser(user.id)}><MdDelete /></div>
                                                 </TableCell>
                                             </TableRow>
                                         </>

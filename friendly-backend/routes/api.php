@@ -50,8 +50,9 @@ Route::post('add_comment', [CommentController::class,'addComment'])->middleware(
 Route::post('/all_comments', [CommentController::class,'allComments'])->middleware('auth:sanctum');
 
 Route::post('/delete_comment', [CommentController::class,'deleteComment'])->middleware('auth:sanctum');
+
 // logout
-Route::post('logout', [UserAuthController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/logout', [UserAuthController::class, 'logout'])->middleware('auth:sanctum');
 
 
 /* get requests */
@@ -68,3 +69,4 @@ Route::get('/total_data', [AdminController::class,'countTotalData']);
     
 /* put requests */
 Route::put('/update_wave_status/{id}', [WaveController::class,'updateWaveStatus'])->middleware('auth:sanctum');
+Route::post('/update_comment', [CommentController::class,'updateComment'])->middleware('auth:sanctum');

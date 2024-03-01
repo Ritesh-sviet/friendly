@@ -23,6 +23,7 @@ interface AllWavesPopupProps {
 // Refactored AllWavesPopup component to improve readability and maintainability
 
 const AllWavesPopup: React.FC<AllWavesPopupProps> = (props) => {
+    
     // State for adding comments and the comment content
     const [addingComment, setAddingComment] = useState(false);
     const [comment, setComment] = useState("");
@@ -68,13 +69,13 @@ const AllWavesPopup: React.FC<AllWavesPopupProps> = (props) => {
         setAddingComment(false);
     };
     return (
-        <div className='AllWaves'>
+        <div className='AllWaves h-[500px] overflow-y-scroll'>
             <div className='w-full text-right'>
                 <AlertDialogCancel className='text-4xl rounded-[50%] p-0 text-red-600 hover:outline-green'><GoXCircle /></AlertDialogCancel>
             </div>
-            <div className='border-2 h-40 bg-linkcolor w-full text-center mb-10 rounded-xl'>
+            <div className='w-full h-40 mb-10 text-center border-2 bg-linkcolor rounded-xl'>
                 <span className='text-9xl opacity-5'>Details</span>
-                <div className='flex justify-start items-center w-full h-0'>
+                <div className='flex items-center justify-start w-full h-0'>
                     <img src={props.user.profile_photo ? `http://127.0.0.1:8000/profile_photos/${props.user.profile_photo}` : '../../public/assets/icons/Layer_1.png'} alt='profile' className='ml-10 h-32 w-32 rounded-[50%] border-2 bg-white' />
                     <div className='ml-[20px] pb-5 flex flex-col justify-start items-center'>
                         <span className='text-3xl font-semibold text-white'>{props.user.first_name} {props.user.last_name}</span>
@@ -85,7 +86,7 @@ const AllWavesPopup: React.FC<AllWavesPopupProps> = (props) => {
             <span className='text-3xl'>Message: </span>
             <div className='pt-[10px] flex justify-evenly'>
                 <div className='w-[50%] flex flex-wrap h-[200px] overflow-y-scroll overflow-x-auto border-2 shadow-2xl rounded-xl'>
-                    <i className='flex flex-wrap font-extralight font-serif text-2xl w-full px-5 '>
+                    <i className='flex flex-wrap w-full px-5 font-serif text-2xl font-extralight '>
                         {props.message}
                     </i>
                 </div>
@@ -100,8 +101,8 @@ const AllWavesPopup: React.FC<AllWavesPopupProps> = (props) => {
                 // Render comment input section when addingComment is true
                 <div className='comment-input-section my-[30px] w-full'>
                     <input type='text' placeholder='Add your comment...' value={comment} onChange={(e) => setComment(e.target.value)} className='w-full h-[60px] rounded-lg text-xl border-2 mb-5 pl-5' />
-                    <div className='flex flex-row w-full  justify-evenly'>
-                        <Button variant='ghost' className='bg-sidebar text-xl text-white' onClick={() => handleSendComment(comment)}>Send</Button>
+                    <div className='flex flex-row w-full justify-evenly'>
+                        <Button variant='ghost' className='text-xl text-white bg-sidebar' onClick={() => handleSendComment(comment)}>Send</Button>
                         <Button variant='outline' onClick={handleCancelComment}>
                             Cancel
                         </Button>

@@ -20,13 +20,18 @@ interface User {
 interface allcomments {
   id: number
   comment: string;
+  user_id: number;
   user: User;
 }
 
 // Define Comment component
 const Comment: React.FC<comment> = (props) => {
+  const loggedInUserId = localStorage.getItem('id');
   // Define comments state and setComments function
   const [comments, setComments] = useState<allcomments[]>([])
+  const [editComment, setEditComment] = useState('')
+  const [changeEditButton, setChangeEditButton] = useState('Edit');
+  const [changeDeleteButton, setChangeDelete] = useState(changeEditButton === 'update' ? 'cancel' : 'Delete');
   // Fetch comments data when props.wave changes
   useEffect(() => {
     // Define fetchData function to fetch data from API
@@ -51,7 +56,7 @@ const Comment: React.FC<comment> = (props) => {
             console.error("API response data is not an array");
           }
         } else {
-          toast.error(response.data.message);
+          console.log(response.data.message);
         }
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -63,53 +68,101 @@ const Comment: React.FC<comment> = (props) => {
 
   // Define handleDelete function to delete a comment
   const handleDelete = async (commentId: number) => {
-    try {
-      // Make a POST request to delete a comment
-      const response = await axios.post('http://127.0.0.1:8000/api/delete_comment', {
-        id: commentId,
-      },
-        {
-          headers: {
-            'Accept': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-          }
-        });
-      if (response.data.status === 'success') {
-        // Update comments state by filtering out the deleted comment
-        setComments((prevComments) => prevComments.filter((c) => c.id !== commentId));
+    if (changeDeleteButton === 'Delete') {
+      try {
+        // Make a POST request to delete a comment
+        const response = await axios.post('http://127.0.0.1:8000/api/delete_comment', {
+          id: commentId,
+        },
+          {
+            headers: {
+              'Accept': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            }
+          });
+        if (response.data.status === 'success') {
+          // Update comments state by filtering out the deleted comment
+          setComments((prevComments) => prevComments.filter((c) => c.id !== commentId));
 
+        }
+        else {
+          // Display error message if deletion is not successful
+          toast.error(response.data.message)
+        }
       }
-      else {
-        // Display error message if deletion is not successful
-        toast.error(response.data.message)
+      catch (error) {
+        console.log(error);
       }
     }
-    catch (error) {
-      console.log(error);
+    else {
+      setChangeDelete('Delete');
+      setChangeEditButton('Edit');
     }
   }
+  const handleEditComment = async ( commentId: number) => {
+    setChangeEditButton('update');
+    setChangeDelete('cancel');
+      if (changeEditButton === 'update') {
+        // Perform the API request to add the comment
+        // After successful API request, update the UI and reset the state
+        // Update UI and reset state after API request
+        // Send API request to add the comment
+        const response = await axios.post('http://127.0.0.1:8000/api/update_comment', {
+          'comment_id': commentId,
+          'comment': editComment
+        },
+          {
+            headers: {
+              'Accept': 'application/json',
+              'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+          });
 
+        // Handle API response
+        if (response.data.status === 'success') {
+          toast.success(response.data.message);
+          // Fetch updated comments after successful addition
 
+        }
+        else {
+          toast.error(response.data.message);
+        }
+      }
+  }
 
   // Render comments or a message if no comments found
+
+
   return (
 
 
     comments.length === 0 ? (<div className='text-center text-red-600 underline'>No comments found!</div>
     ) : (
 
-      <div className='h-40 overflow-y-scroll bg-green-200 rounded-lg px-5 pt-5'>
-        {comments.map((comment) => (
-          <div className='py-5 flex flex-row justify-between' key={comment.id}>
+      <div className='h-40 px-5 pt-5 overflow-y-scroll bg-green-200 rounded-lg'>
+        {comments.map((comment) =>
+        (
+          <div className='flex flex-row justify-between py-5' key={comment.id}>
             <div className='flex flex-row gap-5'>
               <span className='font-semibold underline'>{comment.user.first_name} {comment.user.last_name} :</span>
-              <div className='h-14 border-2 border-white w-[30rem] p-3 flex flex-wrap overflow-y-scroll rounded-lg'>{comment.comment}</div>
+              <textarea className={`h-14 border-2 border-white w-[30rem] p-3 flex flex-wrap overflow-y-scroll rounded-lg `} value={comment.comment} onChange={event => setEditComment(event.target.value)} />
+              
+              
+              
             </div>
-            <div className='flex flex-row gap-5 '>
-              <Button>Edit</Button>
-              <Button onClick={(event) => { event.preventDefault(); handleDelete(comment.id) }}>Delete</Button>
-            </div>
+            {comment.user_id === Number(loggedInUserId) && (
+              <div className='flex flex-row gap-5 '>
+
+                <Button variant='ghost' className='text-xl text-white bg-sidebar' onClick={() => handleEditComment(comment.id)}>
+                  {changeEditButton}
+                </Button>
+
+                <Button onClick={(event) => { event.preventDefault(); handleDelete(comment.id) }}>{changeDeleteButton}</Button>
+              </div>
+            )}
+
           </div>
+          // < ListedComments AllComments={comment} />
         ))}
       </div>
     )

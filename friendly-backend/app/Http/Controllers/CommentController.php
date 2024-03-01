@@ -9,33 +9,13 @@ use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
-    // public function allComments(Request $request)
-    // {
-    //     // $comments = Comment::all();
-    //     $comments = Comment::where('wave_id', $request->wave_id)->get();
-    //     $comment = Comment::with('user')->get();
-    //     // $comment = Comment::with('user')->get();
-    //     if($comments->isEmpty()) {
-    //         return response()->json([
-    //             'status' => 'error',
-    //             'message' => 'No comments found'
-    //         ]);
-    //     }
-    //     else {
-    //         return response()->json([
-    //             'status' => 'success',
-    //             'message' => 'All comments',
-    //             'data' => [$comments, $comment]
-    //         ]);
-    //     }
-    // }
     public function allComments(Request $request)
     {
 
         $comments = Comment::with('user')
-                      ->where('wave_id', $request->wave_id)
-                      ->get();
-        
+            ->where('wave_id', $request->wave_id)
+            ->get();
+
 
         if ($comments->isEmpty()) {
             return response()->json([
@@ -60,7 +40,7 @@ class CommentController extends Controller
         ]);
 
         // print_r(Auth::user()->id);die;
-        $comment = Comment::create([ 
+        $comment = Comment::create([
             'user_id' => Auth::user()->id, // comment creator
             'wave_id' => $request->wave_id,
             'comment' => $request->comment,
@@ -73,18 +53,48 @@ class CommentController extends Controller
             'data' => $comment,
         ]);
     }
+    public function updateComment(Request $request)
+    {
+        $validate = $request->validate([
+            'comment_id' => 'required', //on which comment
+            // 'wave_id' => 'required', //on which post
+            'comment' => 'required', //to replace with
+        ]);
+        // echo($request);die;
+        
+        // $comment = Comment::where('wave_id', $request->wave_id && 'id', $request->comment_id && 'user_id', auth()->user()->id);
+        // $comment->comment = $request->comment;
+        // $comment->save();
+        // print_r($comment);die;
+        // echo $request->comment_id; die;
+        $fecthComment=Comment::where('id','=',$request->comment_id)->update(['comment'=>$request->comment]);
+        // echo $fecthComment ;die;
+        // $updateComment=Comment::update(['comment'=>$request->comment]);
+        // echo "hi";
+        // print_r($fecthComment);
+        // die('ggg');
 
-    public function deleteComment(Request $request){
+        if ($fecthComment) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Comment updated successfully',
+                'data' => $fecthComment,
+            ]);
+        }
+    }
+
+    public function deleteComment(Request $request)
+    {
         $comment = Comment::where('id', $request->id)->first();
-        if($comment){
+        if ($comment) {
             $comment->is_deleted = 1;
             $comment->save();
             $comment->delete();
-            
+
             return response()->json([
-                'status'=> 'success',
-                'message'=> 'comment deleted successfully',
-                'data'=> $comment
+                'status' => 'success',
+                'message' => 'comment deleted successfully',
+                'data' => $comment
             ]);
         } else {
             return response()->json([

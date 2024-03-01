@@ -60,7 +60,7 @@ const TopBar = () => {
 
             };
             // Make a POST request to the logout API endpoint with empty data and the headers
-            const response = await axios.post(url, {}, { headers });
+            const response = await axios.post(url, {}, { headers: headers });
             // Check if the logout is successful
             if (response.data.status === "success") {
                 toast.success(response.data.message);
@@ -79,13 +79,13 @@ const TopBar = () => {
         }
     }
     return (
-        <section className='topbar w-full h-20 bg-white'>
-            <div className='flex items-center justify-end pr-40 border-b-2 h-full'>
+        <section className='w-full h-20 bg-white topbar'>
+            <div className='flex items-center justify-end h-full pr-40 border-b-2'>
 
-                <div className='flex gap-2 items-center flex-center'>
+                <div className='flex items-center gap-2 flex-center'>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <img src={user.profile_photo ? `http://127.0.0.1:8000/profile_photos/${user.profile_photo}` : '../../public/assets/icons/Layer_1.png'} alt='profile' className='h-10 w-10 rounded-full border-2 cursor-pointer' />
+                            <img src={user.profile_photo ? `http://127.0.0.1:8000/profile_photos/${user.profile_photo}` : '../../public/assets/icons/Layer_1.png'} alt='profile' className='w-10 h-10 border-2 rounded-full cursor-pointer' />
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="w-56">
                             <DropdownMenuLabel>My Account</DropdownMenuLabel>
@@ -114,7 +114,7 @@ const TopBar = () => {
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
-                <p className='font-bold pl-10'>Welcome <br /><small>{user.first_name} {user.last_name}</small></p>
+                <p className='pl-10 font-bold'>Welcome <br /><small>{user.first_name} {user.last_name}</small></p>
             </div>
         </section >
     )

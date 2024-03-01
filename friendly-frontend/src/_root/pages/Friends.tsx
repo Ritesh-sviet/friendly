@@ -45,7 +45,7 @@ const Friends: React.FC = () => {
           },
         });
       if (response.data.status === 'success') {
-        toast.success(`Form ${index + 1} submitted successfully!`);
+        // toast.success(`Form ${index + 1} submitted successfully!`);
         toast.success(response.data.message);
       }
       else {
@@ -73,9 +73,9 @@ const Friends: React.FC = () => {
     setForms(updatedForms);
   };
   return (
-    <div className='h-full w-full'>
-      <div className='flex text-2xl w-48 justify-evenly items-start mt-8 cursor-pointer'>
-        <IoArrowBackOutline className='goBackIcon hover:-translate-x-1 hover:transition-all hover:ease-in-out hover:duration-300 text-3xl' onClick={() => navigate('/friendly')} /> Friends
+    <div className='w-full h-full'>
+      <div className='flex items-start w-48 mt-8 text-2xl cursor-pointer justify-evenly'>
+        <IoArrowBackOutline className='text-3xl goBackIcon hover:-translate-x-1 hover:transition-all hover:ease-in-out hover:duration-300' onClick={() => navigate('/friendly')} /> Friends
       </div>
       {invite &&
         <div className='w-[90%] mx-auto my-12'>
@@ -89,10 +89,10 @@ const Friends: React.FC = () => {
             <CardHeader className='mb-5'>
               <div className='flex w-[90%] justify-between'>
                 <CardTitle>
-                  <div className='bg-white w-full h-16 py-0 pl-5 shadow-2xl border-2 rounded-full flex items-center'>
+                  <div className='flex items-center w-full h-16 py-0 pl-5 bg-white border-2 rounded-full shadow-2xl'>
                     <FaSearch className='text-sidebar' />
                     <input
-                      className='bg-transparent border-none h-full w-full text-lg font-medium ml-3 focus:outline-none'
+                      className='w-full h-full ml-3 text-lg font-medium bg-transparent border-none focus:outline-none'
                       placeholder='Type to search...'
                       value={searchTerm}
                       onChange={e => setSearchTerm(e.target.value)}
@@ -100,7 +100,7 @@ const Friends: React.FC = () => {
                   </div>
                 </CardTitle>
                 <CardTitle className={`text-lg font-normal cursor-pointer`}>
-                  <Button className='bg-sidebar text-xl p-7' onClick={() => setInvite(true)}>Invite Friend</Button>
+                  <Button className='text-xl bg-sidebar p-7' onClick={() => setInvite(true)}>Invite Friend</Button>
                 </CardTitle>
               </div>
             </CardHeader>
@@ -146,7 +146,7 @@ const Friends: React.FC = () => {
                             onChange={(e) => handleInputChange(index, 'message', e.target.value)}
                           />
                         </div>
-                        <Button type="submit" className='bg-sidebar text-md p-7 mt-10'>Send form {index + 1}</Button>
+                        <Button type="submit" className='mt-10 bg-sidebar text-md p-7'>Send form {index + 1}</Button>
                         <div className='flex justify-end mr-10'>
                           {forms.length > 1 && <button className='text-red-600' onClick={() => removeForm(index)}>-Remove</button>}
                         </div>
@@ -157,8 +157,8 @@ const Friends: React.FC = () => {
                     <button onClick={addNewForm} className='text-sidebar hover:underline'>+ Add Form</button>
                   </div>
                 </div >
-                <div className='w-full flex justify-end '>
-                  <Button className='bg-sidebar text-xl p-7 mt-10' onClick={() => setInvite(false)}>Friends</Button>
+                <div className='flex justify-end w-full '>
+                  <Button className='mt-10 text-xl bg-sidebar p-7' onClick={() => setInvite(false)}>Friends</Button>
                 </div>
               </>
             ) : (
